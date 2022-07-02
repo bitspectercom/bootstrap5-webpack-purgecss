@@ -1,4 +1,4 @@
-# Webpack + Bootstrap 5
+# Bootstrap 5 + Webpack + PurgeCSS
 
 ## Installation
 
