@@ -1,6 +1,5 @@
 const path = require('path');
 const glob = require('glob')
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const PurgecssPlugin = require('purgecss-webpack-plugin')
@@ -11,6 +10,21 @@ const PATHS = {
 
 module.exports = (env, argv) => {
 	const isProductionMode = (argv.mode === 'production');
+	let plugins = [];
+
+	plugins.push(
+		new MiniCssExtractPlugin({
+			filename: "css/[name].css",
+		})
+	);
+
+	if (isProductionMode) {
+		plugins.push(
+			new PurgecssPlugin({
+				paths: glob.sync(`${PATHS.src}/**/*.php`, { nodir: true })
+			}),
+		);
+	}
 
 	const config = {
 		context: path.resolve(__dirname, "src"),
